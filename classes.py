@@ -172,3 +172,43 @@ class Hero:
         if self.move == 'fall':
             self.Vy += self.g
             self.rect.y += self.Vy
+class Interface:
+    def __init__(self):
+        self.font = pygame.font.Font('fonts/PF Stamps Pro Metal.ttf',24)
+
+        self.map = self._load_and_transform('map_icon.png', 30)
+        self.score = self._load_and_transform('score_icon.png', 30)
+        self.clock = self._load_and_transform('clock_icon.png', 30)
+
+
+    def _load_and_transform(self, fileName,  size):
+        icon = pygame.image.load(f'images/5 Icons/{fileName}')
+        icon = pygame.transform.scale(icon, [size, size])
+        return icon
+
+    def draw(self, screen, mapName,score, clock):
+        self._draw_icon(
+            screen,
+            self.map,
+            str(mapName),
+            1640,950
+        )
+        self._draw_icon(
+            screen,
+            self.score,
+            str(score),
+            1640, 990)
+
+        self._draw_icon(
+            screen,
+            self.clock,
+            str(clock),
+            1640,1030)
+
+
+    def _draw_icon(self,screen,icon, text,x,y):
+        screen.blit(icon, [x, y])
+        text_r = self.font.render(text,True,'White')
+        screen.blit(text_r, [x+40, y+10])
+
+

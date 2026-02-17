@@ -6,6 +6,7 @@ screen = pygame.display.set_mode([0, 0], pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 
 score = 0
+frame = 0
 level = 0
 maps = ['Dark Forest.txt',
         'map.txt',
@@ -30,6 +31,7 @@ menu = Menu(
     'DarkGray',
     'center'
 )
+interface = Interface()
 
 # Создаём конструктор и карту
 constructor = Constructor(mapSize=[48, 27])
@@ -138,9 +140,11 @@ while True:
     if menu.mode == 'constructor':
         constructor.draw(screen)
     elif menu.mode == 'game':
+        frame += 1
         map.draw_background(screen)
         player.draw(screen)
         map.draw_tiles(screen)
+        interface.draw(screen,maps[level][:-4],score,frame//60)
     elif menu.mode == 'menu':
         menu.draw(screen)
 
