@@ -4,13 +4,13 @@ pygame.init()
 import os
 
 class Map:
-    def __init__(self):
+    def __init__(self, mapName):
         self.frame = 0
         self.tiles = {}
         self.background = None
         self.player_pos = []
 
-        with open('maps/map.txt', 'r') as file:
+        with open(f'maps/{mapName}', 'r') as file:
             input = eval(file.read())
 
         tileset = None

@@ -6,6 +6,21 @@ screen = pygame.display.set_mode([0, 0], pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 
 score = 0
+level = 0
+maps = ['Dark Forest.txt',
+        'map.txt',
+        'Hisoka.txt',
+        'Forest.txt',
+  #      'jumper.txt',
+        'dambs.txt',
+        'abandoned_swamp.txt',
+        'Всевидящий лес.txt',
+        'Way to light.txt',
+        'Void rush.txt',
+        'mountains.txt',
+        'DARK.SIDE.txt',
+        'Gold_Bunny.txt'
+       ]
 
 # Создаём меню
 menu = Menu(
@@ -18,13 +33,13 @@ menu = Menu(
 
 # Создаём конструктор и карту
 constructor = Constructor(mapSize=[48, 27])
-map = Map()
+map = Map(maps[level])
 
 # Игрок
 player = Hero(map.player_pos, 0.5, -12)
 
 def handler():
-    global map, player
+    global map, player, level
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             quit()
@@ -32,7 +47,7 @@ def handler():
             for item in range(len(menu.items)):
                 if menu.rects[item].collidepoint(pygame.mouse.get_pos()):
                     if menu.items[item] == 'Игра':
-                        map = Map()
+                        map = Map(maps[level])
                         player = Hero(map.player_pos, 0.5, -12)
                         menu.mode = 'game'
                     elif menu.items[item] == 'Конструктор':
@@ -42,7 +57,11 @@ def handler():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 menu.mode = 'menu'
-
+            if event.key == pygame.K_n:
+                if level < len(maps)-1:
+                    level += 1
+                map = Map(maps[level])
+                player = Hero(map.player_pos, 0.5, -12)
     # Управление персонажем
     keys = pygame.key.get_pressed()
     if keys[pygame.K_RIGHT]:
@@ -94,6 +113,12 @@ def collider():
         elif player.rect.colliderect(rect) and map.tiles[key]['type'] == 'Rune':
             score += 10
             map.tiles.pop(key)
+            break
+        elif player.rect.colliderect(rect) and map.tiles[key]['type'] == 'Rune':
+            if player.key:
+                level += 1
+                map.__init__(maps[level])
+                player.__init__(map.player_pos, 0.5, -12)
             break
 
     if collide_dir == 'down':
